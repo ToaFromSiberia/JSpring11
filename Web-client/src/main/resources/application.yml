@@ -1,0 +1,55 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: "WEB-CLIENT"
+
+
+# Настрока на Admin
+  boot:
+    admin:
+      client:
+        url: http://localhost:9050/admin
+
+# Настройки actuator и связанных с ним метрик.
+management:
+  endpoint:
+    health:
+      show-details: always
+    info:
+      access: unrestricted
+    prometheus:
+      access: unrestricted
+
+  # разрешаем отображение информации из info-секции файла настроек
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true    # это выведет в info информацию по JVM
+
+  endpoints:
+    web:
+      exposure:
+        include: info, metrics, health, prometheus, loggers, logfile, env, bean
+#    jmx:
+#      exposure:
+#        exclude: "*"
+#  jmx:
+#    metrics:
+#      export:
+#        enabled: true
+
+info:
+  app:
+    name: "PK8000: magazine of games"
+    description: "Web client for my Spring Boot example"
+    version: "3.1"
+  developer:
+    name: "Andrey Hlus"
+    years: "49"
+
+logging:
+  file:
+    name: logs/web-client.log   # будет так же доступен через веб-интерфейс: actuator/logfile

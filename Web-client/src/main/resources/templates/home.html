@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Products</title>
+    <style>
+        /* Стили для заголовка */
+        /* Стили для заголовка */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px; /* Увеличил отступы для более просторного вида */
+            background: linear-gradient(90deg, #4e54c8, #8f94fb); /* Добавлен градиент для фона */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легкая тень для разделения хедера */
+            border-bottom: none; /* Убрал скучную линию снизу */
+            color: #fff; /* Белый текст */
+        }
+
+        /* Заголовок страницы */
+        .header .page-title {
+            font-size: 1.8em; /* Сделал заголовок чуть крупнее */
+            font-weight: bold;
+            margin: 0;
+            color: #ffe53b; /* Добавил акцентный цвет */
+            text-transform: uppercase; /* Преобразование текста в верхний регистр */
+            letter-spacing: 1px; /* Расстояние между буквами для современного вида */
+        }
+
+        /* Информация о пользователе */
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 1em;
+        }
+
+        /* Выпадающий список */
+        .user-info select {
+            padding: 8px;
+            font-size: 1em;
+            background-color: #fff; /* Белый фон для контраста */
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 5px; /* Скругленные края */
+            transition: border-color 0.3s ease;
+        }
+
+        .user-info select:hover,
+        .user-info select:focus {
+            border-color: #8f94fb; /* Эффект при наведении */
+            outline: none;
+        }
+
+        /*.header {*/
+        /*    display: flex;*/
+        /*    justify-content: space-between;*/
+        /*    align-items: center;*/
+        /*    padding: 10px;*/
+        /*    background-color: #f4f4f4;*/
+        /*    border-bottom: 1px solid #ddd;*/
+        /*}*/
+
+        /*.header .page-title {*/
+        /*    font-size: 1.5em;*/
+        /*    font-weight: bold;*/
+        /*    margin: 0;*/
+        /*}*/
+
+        /*.header .user-info {*/
+        /*    display: flex;*/
+        /*    align-items: center;*/
+        /*    gap: 20px;*/
+        /*}*/
+
+        /*.user-info select {*/
+        /*    padding: 5px;*/
+        /*    font-size: 1em;*/
+        /*}*/
+
+        /*.user-info .balance {*/
+        /*    font-size: 1em;*/
+        /*    color: #007b00;*/
+        /*}*/
+
+        /* Стили для сетки товаров */
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        .product-item {
+            width: calc(25% - 10px);
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+        }
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+        .product-item {
+            width: calc(25% - 10px); /* Ширина для четырёх товаров в строке */
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+        }
+        .product-image {
+            width: 100%;
+            height: auto;
+            /*height: 150px;*/
+            object-fit: cover;
+            object-position: center;
+        }
+        .product-title {
+            font-size: 1.1em;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .product-price {
+            color: #007b00;
+            font-size: 1.1em;
+        }
+        .product-stock {
+            font-size: 0.9em;
+            color: #555;
+        }
+        .quantity-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .quantity-controls button {
+            width: 30px;
+            height: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        .buy-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .product-description {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 10px;
+            height: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 10;
+            -webkit-box-orient: vertical;
+        }
+
+        /* Адаптивные стили для разных экранов */
+        @media (max-width: 992px) {
+            .product-item {
+                width: calc(33.33% - 10px); /* Три товара в строке */
+            }
+        }
+        @media (max-width: 768px) {
+            .product-item {
+                width: calc(50% - 10px); /* Два товара в строке */
+            }
+        }
+        @media (max-width: 576px) {
+            .product-item {
+                width: 100%; /* Один товар в строке для мобильных устройств */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="page-title">Игры для ПК8000</div>
+    <div class="user-info">
+        <div>
+            <span>Пользователь:</span>
+            <strong th:text="${currentUser.username}">Username</strong>
+        </div>
+        <div>
+            Balance:
+            <span class="Баланс" th:text="'$' + ${currentUser.balance}">0.00</span>
+        </div>
+        <form th:action="@{/set-user}" method="get">
+            <select name="userId" onchange="this.form.submit()">
+                <option th:each="user : ${users}" th:value="${user.id}"
+                        th:selected="${user.id == currentUser.id}"
+                        th:text="${user.username}">
+                    Username
+                </option>
+            </select>
+        </form>
+<!--        <form th:action="@{/set-user}" method="post">-->
+<!--            <select name="userId" th:onchange="this.form.submit()">-->
+<!--                <option th:each="user : ${users}" th:value="${user.id}"-->
+<!--                        th:selected="${user.id == currentUser.id}"-->
+<!--                        th:text="${user.username}">-->
+<!--                    Username-->
+<!--                </option>-->
+<!--            </select>-->
+<!--        </form>-->
+    </div>
+</div>
+
+<div class="product-grid">
+    <!-- Перебор товаров из модели -->
+    <div th:each="product : ${products}" class="product-item" th:data-product-id="${product.id}" th:data-product-price="${product.price}">
+        <div class="product-title" th:text="${product.name}">Product Name</div>
+        <img th:src="'data:image/jpeg;base64,' + ${product.imageBase64}" alt="Product Image" class="product-image"/>
+        <div class="product-description" th:text="${product.description}">Product description...</div>
+        <div class="product-price" th:text="'$' + ${product.price}">Price</div>
+        <div class="product-stock" th:text="'In stock: ' + ${product.stock}">Stock</div>
+        <!-- Форма для отправки данных о заказе -->
+        <form th:action="@{/order}" method="post">
+            <input type="hidden" name="productId" th:value="${product.id}" />
+            <input type="hidden" name="name" th:value="${product.name}" />
+            <input type="hidden" name="price" th:value="${product.price}" />
+            <input type="hidden" name="userId" th:value="${currentUser.id}" />
+            <div class="quantity-controls">
+                <button type="button" onclick="decreaseQuantity(this)">-</button>
+                <input type="number" name="quantity" value="1" min="1" max="5" class="quantity-input" style="width: 50px; text-align: center;" />
+                <button type="button" onclick="increaseQuantity(this)">+</button>
+            </div>
+            <button type="submit" class="buy-button">Купить</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function increaseQuantity(button) {
+        const quantityInput = button.parentElement.querySelector('.quantity-input');
+        let currentQuantity = parseInt(quantityInput.value);
+        if (currentQuantity < 10) { // Проверка на максимальное значение
+            quantityInput.value = currentQuantity + 1; // Увеличиваем количество
+        }
+    }
+
+    function decreaseQuantity(button) {
+        const quantityInput = button.parentElement.querySelector('.quantity-input');
+        let currentQuantity = parseInt(quantityInput.value);
+        if (currentQuantity > 1) { // Проверка на минимальное значение
+            quantityInput.value = currentQuantity - 1; // Уменьшаем количество
+        }
+    }
+</script>
+
+</body>
+</html>
