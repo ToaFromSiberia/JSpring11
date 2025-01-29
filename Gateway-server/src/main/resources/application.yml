@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: "GATEWAY-SERVER"
+
+  profiles:
+    active: mcprofile
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
+#logging:
+#  level:
+#    org:
+#      springframework: DEBUG

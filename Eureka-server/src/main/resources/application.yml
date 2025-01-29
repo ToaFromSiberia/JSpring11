@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: "EUREKA-SERVER"
+  profiles:
+    active: default         # чтобы не подхватил общие настройки в профиле mcprofile
+
+  config:
+    import: optional:configserver:http://localhost:8888    # адрес сервера конфигурации
+
+#eureka:
+#  instance:
+#    leaseRenewalIntervalInSeconds: 5      # как часто сервис будет отправлять "пульс" Eureka
+#    leaseExpirationDurationInSeconds: 15  # время истечения "пульса" до снятия регистрации
+#  client:
+#    registryFetchIntervalSeconds: 5       # интервал обновления информации о других сервисах
+
+#logging:
+#  level:
+#    org:
+#      springframework: DEBUG

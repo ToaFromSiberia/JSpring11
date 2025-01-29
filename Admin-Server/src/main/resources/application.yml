@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: "ADMIN-SERVICE"
+server:
+  address: 0.0.0.0        # прием запросов с любых адресов
+  port: 9050
+  servlet:
+    context-path: /admin
+

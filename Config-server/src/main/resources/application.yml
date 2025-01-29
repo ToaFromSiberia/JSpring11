@@ -1,0 +1,16 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: "Config-Cloud-Server"
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/MrDemonid/Spring-HW-9-config.git
+          default-label: main
+          clone-on-start: true
+#          ignore-local-ssh-settings: false
+#          username: MrDemonid
+#          password: ${TOKEN_GITHUB}  # токен доступа к GitHub
